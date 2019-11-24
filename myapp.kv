@@ -1,3 +1,9 @@
+<Manager>:
+    Menu:
+        name: 'menu'
+    Preparer:
+        name: 'preparer'
+
 <Menu>:
     BoxLayout:
         orientation: 'vertical'
@@ -11,3 +17,23 @@
             text: 'Bem Vindo ao Software de Gerenciamento da Base de Lançamentos da Capital Rocket Team!'
         Button:
             text: 'Iniciar'
+            on_release: app.root.current = 'preparer'
+
+<Preparer>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 100
+        spacing: 10
+        Image: 
+            source: 'images/vegalogo.png'
+            size_hint_y: None
+            height: 200
+        Label:
+            text: 'Instruções:\n1º Prepare o Foguete na Base de Lançamentos\n2º Insira o valor do peso do Foguete no campo de Input, abaixo\n3º Clique em Ok!'
+        Label:
+            text: 'Insira o peso do Foguete:'
+        TextInput:
+            id: value_weight
+        Button:
+            text: 'Ok'
+            

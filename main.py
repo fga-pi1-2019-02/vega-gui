@@ -10,6 +10,8 @@ class Manager(ScreenManager):
 class Menu(Screen):
     pass
 
+class Preparer(Screen):
+    pass
 
 # class OperationScreen():
 #     def __init__(self):
@@ -21,7 +23,7 @@ class Menu(Screen):
 class MyApp(App): 
     
     def build(self):
-        return Menu()
+        return Manager()
 
 if __name__ == "__main__":
     MyApp().run()
