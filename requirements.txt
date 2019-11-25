@@ -1,3 +1,4 @@
 kivy
+kivy_garden.graph
 matplotlib
 pyserial

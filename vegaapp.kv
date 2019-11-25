@@ -8,6 +8,7 @@
 
 <Menu>:
     BoxLayout:
+        width: 1000
         orientation: 'vertical'
         padding: 100
         spacing: 50
@@ -19,6 +20,8 @@
             text: 'Bem Vindo ao Software de Gerenciamento da Base de Lançamentos da Capital Rocket Team!'
         Button:
             text: 'Iniciar'
+            size_hint_y: None
+            height: 50
             on_release: app.root.current = 'preparer'
 
 <Preparer>:
@@ -32,47 +35,44 @@
                     app_icon: 'images/vegaicon.png'
         BoxLayout:
             orientation: 'vertical'
-            padding: 100
-            spacing: 10
+            padding: 90
+            spacing: 25
             Image: 
                 source: 'images/vegalogo.png'
                 size_hint_y: None
                 height: 200
             Label:
+                size_hint_y: None
+                height: 100          
                 text: 'Instruções:\n1º Prepare o Foguete na Base de Lançamentos\n2º Insira o valor do peso do Foguete no campo de Input, abaixo\n3º Clique em Ok!'
             Label:
                 text: 'Insira o peso do Foguete:'
             TextInput:
                 id: value_weight
-                height: 100
+                size_hint_y: None
+                height: 50
             Button:
+                size_hint_y: None
+                height: 50
                 text: 'Ok'
                 on_release: app.root.current = 'dashboard'
 
-<PanelTable>:
-    size_hint_x: None
-    height: 500
-    width: 650
-    TabbedPanelItem:
-        text: 'Combustível'
-        Graph:
-            id: graph
-            xlabel: ""
-            ylabel: "Level"
-            size_hint_y: None
-            height: 500
-            size_hint_x: None
-            width: 650
-    TabbedPanelItem:
-        text: 'Giroscópio'
-        Graph:
-            id: graph
-            xlabel: ""
-            ylabel: "Level"
-            size_hint_y: None
-            height: 500
-            size_hint_x: None
-            width: 650
+
+# <PlotGraphs>:
+#     BoxLayout:
+#         id: destination
+
+# <PanelTable>:
+#     TabbedPanelItem:
+#         text: 'Combustível'
+#         PlotGraphs:
+#             size_hint_x: None
+#             width: 700
+#     TabbedPanelItem:
+#         text: 'Giroscópio'
+#         PlotGraphs:
+#             size_hint_x: None
+#             width: 700
 
 <Dashboard>:
     BoxLayout:
@@ -85,10 +85,23 @@
                     app_icon: 'images/vegaicon.png'
         BoxLayout:
             orientation: 'horizontal'
-            PanelTable:
-                do_default_tab: False
+            # PanelTable:
+            #     do_default_tab: False
+            # Graph:
+            #     id: graph
+            #     title: 'Combustível'
+            #     xlabel: "Tempo"
+            #     ylabel: "Volume"
+            #     size_hint_y: None
+            #     height: 500
+            #     size_hint_x: None
+            #     width: 650
+            PlotGraphs:
+                size_hint_x: None
+                width: 700
             BoxLayout:
                 orientation: 'vertical'
+                size_hint_x: None
                 padding: 50
                 spacing: 50
                 Button:
