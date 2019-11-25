@@ -1,0 +1,106 @@
+<Manager>:
+    Menu:
+        name: 'menu'
+    Preparer:
+        name: 'preparer'
+    Dashboard:
+        name: 'dashboard'
+
+<Menu>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 100
+        spacing: 50
+        Image: 
+            source: 'images/vegalogo.png'
+            size_hint_y: None
+            height: 200
+        Label:
+            text: 'Bem Vindo ao Software de Gerenciamento da Base de Lançamentos da Capital Rocket Team!'
+        Button:
+            text: 'Iniciar'
+            on_release: app.root.current = 'preparer'
+
+<Preparer>:
+    BoxLayout:
+        orientation: 'vertical'
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title: 'Preparo'
+                    on_release: app.root.current = 'menu'
+                    app_icon: 'images/vegaicon.png'
+        BoxLayout:
+            orientation: 'vertical'
+            padding: 100
+            spacing: 10
+            Image: 
+                source: 'images/vegalogo.png'
+                size_hint_y: None
+                height: 200
+            Label:
+                text: 'Instruções:\n1º Prepare o Foguete na Base de Lançamentos\n2º Insira o valor do peso do Foguete no campo de Input, abaixo\n3º Clique em Ok!'
+            Label:
+                text: 'Insira o peso do Foguete:'
+            TextInput:
+                id: value_weight
+                height: 100
+            Button:
+                text: 'Ok'
+                on_release: app.root.current = 'dashboard'
+
+<PanelTable>:
+    size_hint_x: None
+    height: 500
+    width: 650
+    TabbedPanelItem:
+        text: 'Combustível'
+        Graph:
+            id: graph
+            xlabel: ""
+            ylabel: "Level"
+            size_hint_y: None
+            height: 500
+            size_hint_x: None
+            width: 650
+    TabbedPanelItem:
+        text: 'Giroscópio'
+        Graph:
+            id: graph
+            xlabel: ""
+            ylabel: "Level"
+            size_hint_y: None
+            height: 500
+            size_hint_x: None
+            width: 650
+
+<Dashboard>:
+    BoxLayout:
+        orientation: 'vertical'
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title: 'Dashboard'
+                    on_release: app.root.current = 'preparer'
+                    app_icon: 'images/vegaicon.png'
+        BoxLayout:
+            orientation: 'horizontal'
+            PanelTable:
+                do_default_tab: False
+            BoxLayout:
+                orientation: 'vertical'
+                padding: 50
+                spacing: 50
+                Button:
+                    text: 'Ignitar o Foguete'
+                    size_hint_x: None
+                    width: 150
+                    size_hint_y: None
+                    height: 100
+                Button:
+                    text: 'Gerar Relatório'
+                    size_hint_x: None
+                    width: 150
+                    size_hint_y: None
+                    height: 100
+

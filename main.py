@@ -1,8 +1,9 @@
 from kivy.app import App
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import Screen, ScreenManager
+from kivy.uix.tabbedpanel import TabbedPanel
+from kivy.garden.graph import MeshLinePlot
+from kivy.modules.console import Console, ConsoleAddon
+
 
 class Manager(ScreenManager):
     pass
@@ -13,17 +14,18 @@ class Menu(Screen):
 class Preparer(Screen):
     pass
 
-# class OperationScreen():
-#     def __init__(self):
-#         self.ingnition = ingnition
+class PanelTable(TabbedPanel):
+    pass
+    # def __init__(self, **kwargs):
+    #     super(PanelTable, self).__init__()
+    #     self.plot = MeshLinePlot(color=[1, 0, 10, 1])
 
-#     def changeIgnition(self):
-#         return !self.ingnition
+class Dashboard(Screen):
+    pass
 
-class MyApp(App): 
-    
+class VegaApp(App):
     def build(self):
         return Manager()
 
 if __name__ == "__main__":
-    MyApp().run()
+    VegaApp().run()
