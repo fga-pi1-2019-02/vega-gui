@@ -7,21 +7,45 @@ from kivy.clock import Clock
 from kivy.modules.console import Console, ConsoleAddon
 from kivy.core.window import Window
 from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+from kivy.uix.button import Button
 from kivy.clock import Clock
+from kivy.logger import Logger
+from kivy.uix.popup import Popup
 import matplotlib
 import matplotlib.pyplot as plt
-from random import randint
+import matplotlib.animation as animation
+import random
+import time
+import numpy as np
 
 
 Window.size = (910, 670)
-
 
 
 class Manager(ScreenManager):
     pass
 
 class Menu(Screen):
-    pass
+    def on_pre_enter(self):
+        Window.bind(on_request_close=self.confirmation_exit)
+
+    def confirmation_exit(self, *args, **kwargs):
+        print('CHAMOU')
+        box = BoxLayout(orientation='vertical', padding=23, spacing=0)
+        buttons = BoxLayout(padding=10, spacing=10)
+
+        pop = Popup(title='Deseja mesmo sair?', content=box, size_hint=(None, None), size=(300,180))
+
+        yes = Button(text='Sim', on_release=App.get_running_app().stop, size_hint_x=None, width=100, size_hint_y=None, height=30)
+        no = Button(text='Não', on_release=pop.dismiss, size_hint_x=None, width=100, size_hint_y=None, height=30)
+
+        buttons.add_widget(yes)
+        buttons.add_widget(no)
+
+        box.add_widget(buttons)
+
+        pop.open()
+        return True
 
 class Preparer(Screen):
     pass
@@ -31,38 +55,34 @@ class PlotGraphs(BoxLayout):
         super(PlotGraphs, self).__init__()
         self.add_widget(FigureCanvasKivyAgg(plt.gcf()))
 
-    # Clock.schedule_interval(self.get_value, 0.001)
-    plt.ylabel('Volume')
+    # ysample = random.sample(range(-50, 50), 100)
+    
+    # xdata = []
+    # ydata = []
+    
+    # axes = plt.gca()
+    # axes.set_xlim(0, 100)
+    # axes.set_ylim(-50, +50)
+    # # line, = axes.plot(xdata, ydata, 'r-')
+    
+    # for i in range(100):
+    #     xdata.append(i)
+    #     ydata.append(ysample[i])
+    #     line.set_xdata(xdata)
+    #     line.set_ydata(ydata)
+    #     plt.pause(1e-17)
+    #     plt.plot()
+    #     time.sleep(0.1)
     plt.xlabel('Tempo')
-    # plt.plot([randint(0, 9),randint(0, 9),randint(0, 9),randint(0, 9)])
-    plt.plot([0, 0, 2, 8])
-    # self.i = 0
-    # self.j = 0
-
-    # def update(self):
-    #     plt.plot([self.i, self.j])
-    #     self.i += 1
-    #     j += 1
-
-    # Clock.schedule_interval(update(i, j), 1)
+    plt.ylabel('Volume')
+    plt.plot([0,0,2,8])
 
 
-
-# class PanelTable(TabbedPanel):
-#     pass
+class PanelTable(TabbedPanel):
+    pass
 
 class Dashboard(Screen):
     pass
-    # def __init__(self, **kwargs):
-    #     super(Dashboard, self).__init__()
-    #     self.plot = MeshLinePlot(color=[1, 0, 0, 1])
-
-    # def start(self):
-    #     self.ids.graph.add_plot(self.plot)
-    #     Clock.schedule_interval(self.get_value, 0.001)
-
-    # def get_value(self):
-    #     self.plot.point = randint(0, 9)
 
 class VegaApp(App):
     def build(self):
