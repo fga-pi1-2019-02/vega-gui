@@ -55,7 +55,57 @@
                 size_hint_y: None
                 height: 50
                 text: 'Ok'
-                on_release: app.root.current = 'dashboard'
+                on_release:
+                    app.root.current = 'dashboard'
+                    root.set_value_weight()
+
+<PlotGraphs>:
+    BoxLayout:
+        orientation: 'horizontal'
+        space: 50
+        Graph:
+            id: graph
+            xlabel: 'Tempo'
+            ylabel: 'Volume'
+            x_grid_label: True
+            y_grid_label: True
+            x_ticks_major: 10
+            y_ticks_major: 1
+            xmin: 0
+            xmax: 100
+            ymin: 0
+            ymax: 15
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_x: None
+            padding: 50
+            width: 10
+            spacing: 50
+            size_hint_y: None
+            height:450
+            pos_hint: {'top': 1}
+
+            Button:
+                text: 'Start'
+                size_hint_x: None
+                width: 150
+                size_hint_y: None
+                height: 100
+                on_release: root.start()
+            Button:
+                text: 'Stop'
+                size_hint_x: None
+                width: 150
+                size_hint_y: None
+                height: 100
+                on_release: root.stop()
+            Button:
+                text: 'Ignitar o Foguete'
+                size_hint_x: None
+                width: 150
+                size_hint_y: None
+                height: 100
+                on_release: root.ignit()
 
 <PanelTable>:
     do_default_tab: False
@@ -88,29 +138,63 @@
             BoxLayout:
                 orientation: 'vertical'
                 size_hint_x: None
-                padding: 50
+                padding: 40
                 spacing: 50
-                Button:
-                    text: 'Start'
-                    size_hint_x: None
-                    width: 150
-                    size_hint_y: None
-                    height: 100
-                Button:
-                    text: 'Stop'
-                    size_hint_x: None
-                    width: 150
-                    size_hint_y: None
-                    height: 100
+                # Button:
+                #     text: 'Start'
+                #     size_hint_x: None
+                #     width: 150
+                #     size_hint_y: None
+                #     height: 100
+                #     on_release: 
+                #         app.some_variable.start()
+                # Button:
+                #     text: 'Stop'
+                #     size_hint_x: None
+                #     width: 150
+                #     size_hint_y: None
+                #     height: 100
+                #     on_release: root.stop()
+
                 Button:
                     text: 'Gerar Relatório'
                     size_hint_x: None
                     width: 150
                     size_hint_y: None
                     height: 100
-                Button:
-                    text: 'Ignitar o Foguete'
-                    size_hint_x: None
-                    width: 150
-                    size_hint_y: None
-                    height: 100
+                    on_release: root.show_save()
+
+                # Button:
+                #     text: 'Ignitar o Foguete'
+                #     size_hint_x: None
+                #     width: 150
+                #     size_hint_y: None
+                #     height: 100
+                #     # on_release: root.ignit()
+
+<SaveDialog>:
+    text_input: text_input
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+            on_selection: text_input.text = self.selection and self.selection[0] or ''
+
+        TextInput:
+            id: text_input
+            size_hint_y: None
+            height: 30
+            multiline: False
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Save"
+                on_release: root.save(filechooser.path, text_input.text)
