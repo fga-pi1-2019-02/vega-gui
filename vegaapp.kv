@@ -65,8 +65,8 @@
         space: 50
         Graph:
             id: graph
-            xlabel: 'Tempo'
-            ylabel: 'Volume'
+            xlabel: 'Tempo (segundos)'
+            ylabel: 'Volume (litros)'
             x_grid_label: True
             y_grid_label: True
             x_ticks_major: 10
@@ -112,17 +112,17 @@
         orientation: 'horizontal'
         space: 50
         Graph:
-            id: graph
-            xlabel: 'Tempo'
-            ylabel: 'Ângulo'
+            id: graphs
+            xlabel: 'Tempo (segundos)'
+            ylabel: 'Ângulo (graus)'
             x_grid_label: True
             y_grid_label: True
             x_ticks_major: 10
-            y_ticks_major: 1
+            y_ticks_major: 180
             xmin: 0
             xmax: 100
             ymin: 0
-            ymax: 15
+            ymax: 360
         BoxLayout:
             orientation: 'vertical'
             size_hint_x: None
@@ -139,21 +139,21 @@
                 width: 150
                 size_hint_y: None
                 height: 100
-                on_release: root.start_giroscopio()
+                on_release: root.start_gyroscope()
             Button:
                 text: 'Stop'
                 size_hint_x: None
                 width: 150
                 size_hint_y: None
                 height: 100
-                on_release: root.stop()
+                on_release: root.stop_gyroscope()
             Button:
                 text: 'Ignitar o Foguete'
                 size_hint_x: None
                 width: 150
                 size_hint_y: None
                 height: 100
-                on_release: root.ignit()
+                # on_release: root.ignit()
 
 <PanelTable>:
     do_default_tab: False

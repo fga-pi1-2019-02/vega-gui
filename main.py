@@ -77,7 +77,6 @@ class PlotGraphs(BoxLayout):
     def __init__(self, **kwargs):
         super(PlotGraphs, self).__init__(**kwargs)
         self.plot = MeshLinePlot(color=[1, 0, 0, 1])
-        self.value_ignit = not self.value_ignit
 
     def start(self):
         self.ids.graph.add_plot(self.plot)
@@ -93,10 +92,13 @@ class PlotGraphs(BoxLayout):
     def get_value(self, dt):
 
         ser_bytes = arduino.readline()
-        tests = float(ser_bytes[0:len(ser_bytes)-2].decode("utf-8"))
-        print(tests)
-        # for tests in test:
-        #     tests += randint(0,1)
+        # print(ser_bytes)
+        decode_byte = ser_bytes[0:len(ser_bytes)-2].decode("utf-8")
+        decode_byte = decode_byte.split()
+        decode_byte = decode_byte[0]
+        print(decode_byte)
+        tests = float(decode_byte)
+        # print(tests)
         test.append(tests)
 
         if(test[-1] >= value_weight):
@@ -116,19 +118,38 @@ class PlotGraphs(BoxLayout):
 
         self.plot.points = [(i, j) for i, j in enumerate(test)]
 
+global test_gyroscope
+test_gyroscope = []
+
 class PlotGraphsGyroscope(BoxLayout):
     def __init__(self, **kwargs):
         super(PlotGraphsGyroscope, self).__init__(**kwargs)
         self.plot = MeshLinePlot(color=[1, 0, 0, 1])
 
-        # def start_giroscopio(self):
-            # self.ids.graph.add_plot(self.plot)
-            # Clock.schedule_interval(self.get_value, 1)
+    def start_gyroscope(self):
+        self.ids.graphs.add_plot(self.plot)
+        Clock.schedule_interval(self.get_value_gyroscope, 1)
 
-        # def get_value(self, dt):
+    def stop_gyroscope(self):
+        Clock.unschedule(self.get_value_gyroscope)
 
+    # def ignit(self):
+    #     arduino.write(str.encode(str('1')))
+    #     time.sleep(1)
 
+    def get_value_gyroscope(self, dt):
 
+        ser_bytes = arduino.readline()
+        # print(ser_bytes)
+        decode_byte = ser_bytes[0:len(ser_bytes)-2].decode("utf-8")
+        decode_byte = decode_byte.split()
+        decode_byte = decode_byte[1]
+        print(decode_byte)
+        tests = float(decode_byte)
+        # print(tests)
+        test_gyroscope.append(tests)
+
+        self.plot.points = [(i, j) for i, j in enumerate(test_gyroscope)]
 
 class SaveDialog(FloatLayout):
     save = ObjectProperty(None)
@@ -154,7 +175,7 @@ class Dashboard(Screen):
     def save(self, path, filename):
         with open(os.path.join(path, filename), 'w', newline='') as f:
             archive = csv.writer(f)
-            fieldnames = ['Tempo', 'Volume']
+            fieldnames = ['Tempo (s)', 'Volume (l)']
             archive.writerow(fieldnames)
             i = 0
             for tests in test:
