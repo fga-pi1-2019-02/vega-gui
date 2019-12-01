@@ -9,7 +9,6 @@ from kivy.core.window import Window
 from kivy.garden.graph import Graph
 from kivy.uix.button import Button
 from kivy.clock import Clock
-from kivy.logger import Logger
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
@@ -74,9 +73,11 @@ global test
 test = []
 
 class PlotGraphs(BoxLayout):
+
     def __init__(self, **kwargs):
         super(PlotGraphs, self).__init__(**kwargs)
         self.plot = MeshLinePlot(color=[1, 0, 0, 1])
+        self.value_ignit = not self.value_ignit
 
     def start(self):
         self.ids.graph.add_plot(self.plot)
@@ -86,17 +87,18 @@ class PlotGraphs(BoxLayout):
         Clock.unschedule(self.get_value)
 
     def ignit(self):
-        pass
+        arduino.write(str.encode(str('1')))
+        time.sleep(1)
 
     def get_value(self, dt):
 
-        tests = 0
-        for tests in test:
-            tests += randint(0,1)
+        ser_bytes = arduino.readline()
+        tests = float(ser_bytes[0:len(ser_bytes)-2].decode("utf-8"))
+        print(tests)
+        # for tests in test:
+        #     tests += randint(0,1)
         test.append(tests)
 
-        print(test[-1])
-        print(value_weight)
         if(test[-1] >= value_weight):
             box = BoxLayout(orientation='vertical', padding=23, spacing=0)
             buttons = BoxLayout(padding=10, spacing=10)
@@ -113,7 +115,18 @@ class PlotGraphs(BoxLayout):
             self.stop()
 
         self.plot.points = [(i, j) for i, j in enumerate(test)]
-        print(self.plot.points)
+
+class PlotGraphsGyroscope(BoxLayout):
+    def __init__(self, **kwargs):
+        super(PlotGraphsGyroscope, self).__init__(**kwargs)
+        self.plot = MeshLinePlot(color=[1, 0, 0, 1])
+
+        # def start_giroscopio(self):
+            # self.ids.graph.add_plot(self.plot)
+            # Clock.schedule_interval(self.get_value, 1)
+
+        # def get_value(self, dt):
+
 
 
 
@@ -140,10 +153,15 @@ class Dashboard(Screen):
 
     def save(self, path, filename):
         with open(os.path.join(path, filename), 'w', newline='') as f:
-            fieldnames = ['column 1', 'column 3', 'column 2']
-            thewriter = csv.DictWriter(f, fieldnames=fieldnames)
-
-            thewriter.writeheader()
+            archive = csv.writer(f)
+            fieldnames = ['Tempo', 'Volume']
+            archive.writerow(fieldnames)
+            i = 0
+            for tests in test:
+                archive.writerow([i, tests])
+                i += 1
+            f.close()
+        self._popup.dismiss()
 
 
 class VegaApp(App):
@@ -151,12 +169,12 @@ class VegaApp(App):
         return Manager()
 
 if __name__ == "__main__":
-    # try:
-    #     ser = serial.Serial('/dev/ttyACM0')
-    # except:
-    #     print ("Failed to connect")    
-    #     exit()
+    try:
+        arduino = serial.Serial('/dev/ttyACM0')
+    except:
+        print ("Failed to connect")    
+        exit()
 
     VegaApp().run()
 
-    # ser.close()
+    arduino.close()
